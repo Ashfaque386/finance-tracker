@@ -1,0 +1,190 @@
+#:kivy 2.0
+
+<GoalsScreen>:
+    name: 'goals'
+    
+    MDBoxLayout:
+        orientation: 'vertical'
+        
+        MDTopAppBar:
+            title: "Goals & Savings"
+            md_bg_color: app.theme_cls.primary_color
+            specific_text_color: 1, 1, 1, 1
+            left_action_items: [["arrow-left", lambda x: setattr(root.manager, 'current', 'dashboard')]]
+            right_action_items: [["plus", lambda x: root.add_goal()]]
+        
+        ScrollView:
+            MDBoxLayout:
+                orientation: 'vertical'
+                padding: dp(16)
+                spacing: dp(16)
+                size_hint_y: None
+                height: self.minimum_height
+                
+                MDLabel:
+                    text: "Active Goals"
+                    font_style: "H6"
+                    bold: True
+                    size_hint_y: None
+                    height: dp(30)
+                
+                MDBoxLayout:
+                    id: goals_container
+                    orientation: 'vertical'
+                    spacing: dp(12)
+                    size_hint_y: None
+                    height: self.minimum_height
+
+
+<GoalCard@MDCard>:
+    goal_id: 0
+    goal_name: ""
+    target_amount: 0.0
+    current_amount: 0.0
+    deadline: ""
+    icon: "flag"
+    color: "#4CAF50"
+    
+    size_hint_y: None
+    height: dp(180)
+    elevation: 2
+    padding: dp(16)
+    
+    MDBoxLayout:
+        orientation: 'vertical'
+        spacing: dp(10)
+        
+        MDBoxLayout:
+            size_hint_y: None
+            height: dp(40)
+            spacing: dp(10)
+            
+            MDIcon:
+                icon: root.icon
+                size_hint_x: None
+                width: dp(40)
+                theme_text_color: "Custom"
+                text_color: root.color
+            
+            MDLabel:
+                text: root.goal_name
+                font_style: "H6"
+                bold: True
+            
+            MDIconButton:
+                icon: "dots-vertical"
+                size_hint_x: None
+                width: dp(40)
+                on_release: root.show_options()
+        
+        MDProgressBar:
+            size_hint_y: None
+            height: dp(8)
+            value: (root.current_amount / root.target_amount * 100) if root.target_amount > 0 else 0
+            color: 0.30, 0.69, 0.31, 1
+        
+        MDBoxLayout:
+            size_hint_y: None
+            height: dp(30)
+            
+            MDLabel:
+                text: f"${root.current_amount:.2f}"
+                font_style: "H6"
+                bold: True
+                theme_text_color: "Custom"
+                text_color: 0.3, 0.7, 0.3, 1
+            
+            Widget:
+            
+            MDLabel:
+                text: f"${root.target_amount:.2f}"
+                font_style: "Body1"
+                size_hint_x: None
+                width: self.texture_size[0]
+        
+        MDLabel:
+            text: f"{(root.current_amount / root.target_amount * 100):.1f}% Complete" if root.target_amount > 0 else "0% Complete"
+            font_style: "Body2"
+            size_hint_y: None
+            height: dp(20)
+        
+        MDBoxLayout:
+            size_hint_y: None
+            height: dp(40)
+            spacing: dp(10)
+            
+            MDLabel:
+                text: f"Deadline: {root.deadline}" if root.deadline else "No deadline"
+                font_style: "Caption"
+            
+            Widget:
+            
+            MDRaisedButton:
+                text: "Add Funds"
+                size_hint_x: None
+                width: dp(120)
+                md_bg_color: app.theme_cls.primary_color
+                on_release: root.add_contribution()
+
+
+<GoalFormDialog>:
+    size_hint: 0.9, None
+    height: dp(500)
+    
+    MDBoxLayout:
+        orientation: 'vertical'
+        padding: dp(20)
+        spacing: dp(15)
+        
+        MDLabel:
+            text: "Create Goal"
+            font_style: "H5"
+            bold: True
+            size_hint_y: None
+            height: dp(40)
+        
+        MDTextField:
+            id: goal_name
+            hint_text: "Goal Name"
+            required: True
+        
+        MDTextField:
+            id: target_amount
+            hint_text: "Target Amount"
+            input_filter: "float"
+            required: True
+        
+        MDTextField:
+            id: current_amount
+            hint_text: "Current Amount (optional)"
+            input_filter: "float"
+            text: "0"
+        
+        MDTextField:
+            id: deadline
+            hint_text: "Deadline (YYYY-MM-DD)"
+            readonly: True
+            on_focus: if self.focus: root.show_date_picker()
+        
+        MDTextField:
+            id: notes
+            hint_text: "Notes (optional)"
+            multiline: True
+            max_height: dp(80)
+        
+        MDBoxLayout:
+            size_hint_y: None
+            height: dp(50)
+            spacing: dp(10)
+            
+            MDFlatButton:
+                text: "Cancel"
+                on_release: root.dismiss()
+            
+            Widget:
+            
+            MDRaisedButton:
+                text: "Save"
+                md_bg_color: app.theme_cls.primary_color
+                on_release: root.save_goal()
+

@@ -1,0 +1,203 @@
+#:kivy 2.0
+
+<BudgetsScreen>:
+    name: 'budgets'
+    
+    MDBoxLayout:
+        orientation: 'vertical'
+        
+        MDTopAppBar:
+            title: "Budgets"
+            md_bg_color: app.theme_cls.primary_color
+            specific_text_color: 1, 1, 1, 1
+            left_action_items: [["arrow-left", lambda x: setattr(root.manager, 'current', 'dashboard')]]
+            right_action_items: [["plus", lambda x: root.add_budget()]]
+        
+        ScrollView:
+            MDBoxLayout:
+                orientation: 'vertical'
+                padding: dp(16)
+                spacing: dp(16)
+                size_hint_y: None
+                height: self.minimum_height
+                
+                # Summary Card
+                MDCard:
+                    size_hint_y: None
+                    height: dp(100)
+                    elevation: 2
+                    padding: dp(16)
+                    
+                    MDBoxLayout:
+                        orientation: 'horizontal'
+                        spacing: dp(20)
+                        
+                        MDBoxLayout:
+                            orientation: 'vertical'
+                            
+                            MDLabel:
+                                text: "Total Budget"
+                                font_style: "Caption"
+                            
+                            MDLabel:
+                                id: total_budget
+                                text: "$0.00"
+                                font_style: "H5"
+                                bold: True
+                        
+                        MDBoxLayout:
+                            orientation: 'vertical'
+                            
+                            MDLabel:
+                                text: "Spent"
+                                font_style: "Caption"
+                            
+                            MDLabel:
+                                id: total_spent
+                                text: "$0.00"
+                                font_style: "H5"
+                                bold: True
+                                theme_text_color: "Custom"
+                                text_color: 0.9, 0.2, 0.2, 1
+                        
+                        MDBoxLayout:
+                            orientation: 'vertical'
+                            
+                            MDLabel:
+                                text: "Remaining"
+                                font_style: "Caption"
+                            
+                            MDLabel:
+                                id: total_remaining
+                                text: "$0.00"
+                                font_style: "H5"
+                                bold: True
+                                theme_text_color: "Custom"
+                                text_color: 0.3, 0.7, 0.3, 1
+                
+                # Budgets List
+                MDBoxLayout:
+                    id: budgets_container
+                    orientation: 'vertical'
+                    spacing: dp(12)
+                    size_hint_y: None
+                    height: self.minimum_height
+
+
+<BudgetCard@MDCard>:
+    budget_id: 0
+    category_name: ""
+    amount: 0.0
+    spent: 0.0
+    period: "Monthly"
+    alert_percentage: 80.0
+    
+    size_hint_y: None
+    height: dp(140)
+    elevation: 2
+    padding: dp(16)
+    
+    MDBoxLayout:
+        orientation: 'vertical'
+        spacing: dp(8)
+        
+        MDBoxLayout:
+            size_hint_y: None
+            height: dp(30)
+            
+            MDLabel:
+                text: root.category_name
+                font_style: "H6"
+                bold: True
+            
+            Widget:
+            
+            MDLabel:
+                text: root.period
+                font_style: "Caption"
+                size_hint_x: None
+                width: self.texture_size[0]
+            
+            MDIconButton:
+                icon: "dots-vertical"
+                size_hint_x: None
+                width: dp(40)
+                on_release: root.show_options()
+        
+        MDBoxLayout:
+            size_hint_y: None
+            height: dp(30)
+            
+            MDLabel:
+                text: f"${root.spent:.2f} / ${root.amount:.2f}"
+                font_style: "Body1"
+        
+        MDProgressBar:
+            size_hint_y: None
+            height: dp(8)
+            value: (root.spent / root.amount * 100) if root.amount > 0 else 0
+            color: (0.30, 0.69, 0.31, 1) if (root.spent / root.amount * 100) < 80 else ((1.0, 0.60, 0.0, 1) if (root.spent / root.amount * 100) < 100 else (0.96, 0.26, 0.21, 1))
+        
+        MDLabel:
+            text: f"{(root.spent / root.amount * 100):.1f}% used" if root.amount > 0 else "0% used"
+            font_style: "Caption"
+            size_hint_y: None
+            height: dp(20)
+
+
+<BudgetFormDialog>:
+    size_hint: 0.9, None
+    height: dp(450)
+    
+    MDBoxLayout:
+        orientation: 'vertical'
+        padding: dp(20)
+        spacing: dp(15)
+        
+        MDLabel:
+            text: "Add Budget"
+            font_style: "H5"
+            bold: True
+            size_hint_y: None
+            height: dp(40)
+        
+        MDTextField:
+            id: category_field
+            hint_text: "Category"
+            readonly: True
+            on_focus: if self.focus: root.show_category_picker()
+            required: True
+        
+        MDTextField:
+            id: amount_field
+            hint_text: "Budget Amount"
+            input_filter: "float"
+            required: True
+        
+        MDTextField:
+            id: period_field
+            hint_text: "Period (Weekly, Monthly, Yearly)"
+            text: "Monthly"
+        
+        MDTextField:
+            id: alert_percentage
+            hint_text: "Alert at % (default: 80)"
+            input_filter: "float"
+            text: "80"
+        
+        MDBoxLayout:
+            size_hint_y: None
+            height: dp(50)
+            spacing: dp(10)
+            
+            MDFlatButton:
+                text: "Cancel"
+                on_release: root.dismiss()
+            
+            Widget:
+            
+            MDRaisedButton:
+                text: "Save"
+                md_bg_color: app.theme_cls.primary_color
+                on_release: root.save_budget()
+

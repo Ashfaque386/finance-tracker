@@ -1,0 +1,180 @@
+#:kivy 2.0
+
+<TransactionsScreen>:
+    name: 'transactions'
+    
+    MDBoxLayout:
+        orientation: 'vertical'
+        
+        MDTopAppBar:
+            title: "Transactions"
+            md_bg_color: app.theme_cls.primary_color
+            specific_text_color: 1, 1, 1, 1
+            left_action_items: [["arrow-left", lambda x: setattr(root.manager, 'current', 'dashboard')]]
+            right_action_items: [["filter-variant", lambda x: root.show_filter_dialog()], ["magnify", lambda x: root.show_search()]]
+        
+        # Filter chips
+        MDBoxLayout:
+            size_hint_y: None
+            height: dp(60)
+            padding: dp(8)
+            spacing: dp(8)
+            
+            ScrollView:
+                do_scroll_y: False
+                
+                MDBoxLayout:
+                    size_hint_x: None
+                    width: self.minimum_width
+                    spacing: dp(8)
+                    
+                    MDChip:
+                        id: filter_all
+                        text: "All"
+                        check: True
+                        on_release: root.filter_transactions('All')
+                    
+                    MDChip:
+                        id: filter_expense
+                        text: "Expenses"
+                        on_release: root.filter_transactions('Expense')
+                    
+                    MDChip:
+                        id: filter_income
+                        text: "Income"
+                        on_release: root.filter_transactions('Income')
+                    
+                    MDChip:
+                        id: filter_transfer
+                        text: "Transfers"
+                        on_release: root.filter_transactions('Transfer')
+        
+        # Transactions List
+        ScrollView:
+            MDList:
+                id: transactions_list
+        
+        # Floating Action Button
+        MDFloatingActionButton:
+            icon: "plus"
+            md_bg_color: app.theme_cls.primary_color
+            pos_hint: {"center_x": 0.9, "center_y": 0.1}
+            on_release: root.add_transaction()
+
+
+<TransactionItem@TwoLineAvatarIconListItem>:
+    transaction_id: 0
+    transaction_type: ""
+    amount: 0.0
+    category_icon: "tag"
+    category_color: "#757575"
+    
+    IconLeftWidget:
+        icon: root.category_icon
+        theme_text_color: "Custom"
+        text_color: root.category_color
+    
+    IconRightWidget:
+        icon: "dots-vertical"
+        on_release: root.show_options()
+
+
+<TransactionFormDialog>:
+    size_hint: 0.9, 0.9
+    
+    MDBoxLayout:
+        orientation: 'vertical'
+        padding: dp(20)
+        spacing: dp(15)
+        
+        MDLabel:
+            text: "Add Transaction"
+            font_style: "H5"
+            bold: True
+            size_hint_y: None
+            height: dp(40)
+        
+        # Transaction Type
+        MDBoxLayout:
+            size_hint_y: None
+            height: dp(50)
+            spacing: dp(10)
+            
+            MDRaisedButton:
+                id: btn_expense
+                text: "Expense"
+                md_bg_color: (0.96, 0.26, 0.21, 1) if self.state == 'down' else (0.2, 0.2, 0.2, 1)
+                on_release: root.set_transaction_type('Expense')
+            
+            MDRaisedButton:
+                id: btn_income
+                text: "Income"
+                md_bg_color: (0.30, 0.69, 0.31, 1) if self.state == 'down' else (0.2, 0.2, 0.2, 1)
+                on_release: root.set_transaction_type('Income')
+            
+            MDRaisedButton:
+                id: btn_transfer
+                text: "Transfer"
+                on_release: root.set_transaction_type('Transfer')
+        
+        # Amount
+        MDTextField:
+            id: amount_field
+            hint_text: "Amount"
+            input_filter: "float"
+            required: True
+            icon_left: "currency-usd"
+        
+        # Category
+        MDTextField:
+            id: category_field
+            hint_text: "Category"
+            readonly: True
+            on_focus: if self.focus: root.show_category_picker()
+            icon_left: "tag"
+        
+        # Account
+        MDTextField:
+            id: account_field
+            hint_text: "Account"
+            readonly: True
+            on_focus: if self.focus: root.show_account_picker()
+            icon_left: "wallet"
+        
+        # Date
+        MDTextField:
+            id: date_field
+            hint_text: "Date"
+            readonly: True
+            on_focus: if self.focus: root.show_date_picker()
+            icon_left: "calendar"
+        
+        # Description
+        MDTextField:
+            id: description_field
+            hint_text: "Description (optional)"
+            multiline: True
+            max_height: dp(100)
+        
+        # Tags
+        MDTextField:
+            id: tags_field
+            hint_text: "Tags (comma separated)"
+        
+        # Buttons
+        MDBoxLayout:
+            size_hint_y: None
+            height: dp(50)
+            spacing: dp(10)
+            
+            MDFlatButton:
+                text: "Cancel"
+                on_release: root.dismiss()
+            
+            Widget:
+            
+            MDRaisedButton:
+                text: "Save"
+                md_bg_color: app.theme_cls.primary_color
+                on_release: root.save_transaction()
+

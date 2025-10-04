@@ -1,0 +1,201 @@
+#:kivy 2.0
+
+<SettingsScreen>:
+    name: 'settings'
+    
+    MDBoxLayout:
+        orientation: 'vertical'
+        
+        MDTopAppBar:
+            title: "Settings"
+            md_bg_color: app.theme_cls.primary_color
+            specific_text_color: 1, 1, 1, 1
+            left_action_items: [["arrow-left", lambda x: setattr(root.manager, 'current', 'dashboard')]]
+        
+        ScrollView:
+            MDList:
+                # General Settings
+                OneLineListItem:
+                    text: "GENERAL"
+                    font_style: "Caption"
+                    theme_text_color: "Secondary"
+                    divider: None
+                
+                TwoLineAvatarIconListItem:
+                    text: "Currency"
+                    secondary_text: root.get_currency()
+                    on_release: root.change_currency()
+                    
+                    IconLeftWidget:
+                        icon: "currency-usd"
+                    
+                    IconRightWidget:
+                        icon: "chevron-right"
+                
+                TwoLineAvatarIconListItem:
+                    text: "Theme"
+                    secondary_text: root.get_theme()
+                    on_release: root.change_theme()
+                    
+                    IconLeftWidget:
+                        icon: "theme-light-dark"
+                    
+                    IconRightWidget:
+                        icon: "chevron-right"
+                
+                TwoLineAvatarIconListItem:
+                    text: "Date Format"
+                    secondary_text: root.get_date_format()
+                    on_release: root.change_date_format()
+                    
+                    IconLeftWidget:
+                        icon: "calendar"
+                    
+                    IconRightWidget:
+                        icon: "chevron-right"
+                
+                TwoLineAvatarIconListItem:
+                    text: "Financial Month Start"
+                    secondary_text: root.get_month_start()
+                    on_release: root.change_month_start()
+                    
+                    IconLeftWidget:
+                        icon: "calendar-start"
+                    
+                    IconRightWidget:
+                        icon: "chevron-right"
+                
+                # Security
+                OneLineListItem:
+                    text: "SECURITY"
+                    font_style: "Caption"
+                    theme_text_color: "Secondary"
+                    divider: None
+                
+                TwoLineAvatarIconListItem:
+                    text: "PIN Lock"
+                    secondary_text: "Set PIN to protect your data"
+                    on_release: root.setup_pin()
+                    
+                    IconLeftWidget:
+                        icon: "lock"
+                    
+                    IconRightWidget:
+                        icon: "chevron-right"
+                
+                # Data Management
+                OneLineListItem:
+                    text: "DATA MANAGEMENT"
+                    font_style: "Caption"
+                    theme_text_color: "Secondary"
+                    divider: None
+                
+                TwoLineAvatarIconListItem:
+                    text: "Backup Data"
+                    secondary_text: "Create backup of all data"
+                    on_release: root.create_backup()
+                    
+                    IconLeftWidget:
+                        icon: "backup-restore"
+                    
+                    IconRightWidget:
+                        icon: "chevron-right"
+                
+                TwoLineAvatarIconListItem:
+                    text: "Restore Data"
+                    secondary_text: "Restore from backup"
+                    on_release: root.restore_backup()
+                    
+                    IconLeftWidget:
+                        icon: "restore"
+                    
+                    IconRightWidget:
+                        icon: "chevron-right"
+                
+                TwoLineAvatarIconListItem:
+                    text: "Export Data"
+                    secondary_text: "Export to CSV/JSON"
+                    on_release: root.export_data()
+                    
+                    IconLeftWidget:
+                        icon: "download"
+                    
+                    IconRightWidget:
+                        icon: "chevron-right"
+                
+                TwoLineAvatarIconListItem:
+                    text: "Import Data"
+                    secondary_text: "Import from CSV/JSON"
+                    on_release: root.import_data()
+                    
+                    IconLeftWidget:
+                        icon: "upload"
+                    
+                    IconRightWidget:
+                        icon: "chevron-right"
+                
+                # Categories
+                OneLineListItem:
+                    text: "CUSTOMIZATION"
+                    font_style: "Caption"
+                    theme_text_color: "Secondary"
+                    divider: None
+                
+                TwoLineAvatarIconListItem:
+                    text: "Manage Categories"
+                    secondary_text: "Add, edit, or delete categories"
+                    on_release: root.manage_categories()
+                    
+                    IconLeftWidget:
+                        icon: "tag-multiple"
+                    
+                    IconRightWidget:
+                        icon: "chevron-right"
+                
+                TwoLineAvatarIconListItem:
+                    text: "Recurring Transactions"
+                    secondary_text: "Manage recurring transactions"
+                    on_release: root.manage_recurring()
+                    
+                    IconLeftWidget:
+                        icon: "repeat"
+                    
+                    IconRightWidget:
+                        icon: "chevron-right"
+                
+                TwoLineAvatarIconListItem:
+                    text: "Debts & Loans"
+                    secondary_text: "Track money lent/borrowed"
+                    on_release: root.manage_debts()
+                    
+                    IconLeftWidget:
+                        icon: "hand-coin"
+                    
+                    IconRightWidget:
+                        icon: "chevron-right"
+                
+                # About
+                OneLineListItem:
+                    text: "ABOUT"
+                    font_style: "Caption"
+                    theme_text_color: "Secondary"
+                    divider: None
+                
+                TwoLineAvatarIconListItem:
+                    text: "Version"
+                    secondary_text: "Money Manager v1.0.0"
+                    
+                    IconLeftWidget:
+                        icon: "information"
+                
+                TwoLineAvatarIconListItem:
+                    text: "Help & Support"
+                    secondary_text: "Get help using the app"
+                    on_release: root.show_help()
+                    
+                    IconLeftWidget:
+                        icon: "help-circle"
+                    
+                    IconRightWidget:
+                        icon: "chevron-right"
+

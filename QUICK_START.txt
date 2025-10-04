@@ -1,0 +1,294 @@
+╔══════════════════════════════════════════════════════════════════════╗
+║                    MONEY MANAGER - QUICK START                       ║
+║                      Get Up and Running in 5 Minutes                 ║
+╚══════════════════════════════════════════════════════════════════════╝
+
+
+🚀 FASTEST PATH TO RUNNING THE APP
+═══════════════════════════════════════════════════════════════════════
+
+STEP 1: Install Python Dependencies
+───────────────────────────────────
+Open terminal/command prompt in the project folder and run:
+
+    pip install -r requirements.txt
+
+This will install: Kivy, KivyMD, Matplotlib, Pillow, and python-dateutil
+
+
+STEP 2: Verify Setup (Optional but Recommended)
+───────────────────────────────────────────────
+Run the verification script:
+
+    python test_setup.py
+
+This checks if everything is installed correctly.
+
+
+STEP 3: Generate Sample Data (Optional)
+───────────────────────────────────────
+To see the app with realistic data:
+
+    python sample_data.py
+
+This creates:
+  • 3 accounts
+  • 150+ transactions over 90 days
+  • 5 budgets
+  • 3 goals
+  • 2 debts
+  • Default categories
+
+
+STEP 4: Run the App!
+───────────────────
+Desktop Mode (for testing):
+
+    python run_desktop.py
+
+OR simply:
+
+    python main.py
+
+
+═══════════════════════════════════════════════════════════════════════
+
+
+📱 BUILDING ANDROID APK
+═══════════════════════════════════════════════════════════════════════
+
+⚠️  IMPORTANT: APK building requires Linux or macOS (or WSL2 on Windows)
+
+
+FOR LINUX/MACOS:
+───────────────
+1. Install Buildozer:
+   pip install buildozer cython
+
+2. Make script executable:
+   chmod +x build_apk.sh
+
+3. Run build script:
+   ./build_apk.sh
+
+OR manually:
+   buildozer -v android debug
+
+First build takes 15-30 minutes as it downloads Android SDK/NDK.
+
+
+FOR WINDOWS:
+───────────
+Option 1: Use WSL2 (Recommended)
+  a) Open PowerShell as Admin: wsl --install
+  b) Restart computer
+  c) Install Ubuntu from Microsoft Store
+  d) Follow Linux instructions above inside Ubuntu
+
+Option 2: Test on Desktop Only
+  - Run: python run_desktop.py
+  - This simulates mobile screen size (360x640)
+
+
+═══════════════════════════════════════════════════════════════════════
+
+
+✅ WHAT TO DO AFTER FIRST RUN
+═══════════════════════════════════════════════════════════════════════
+
+1. EXPLORE THE DASHBOARD
+   • View total balance
+   • Check income/expense summary
+   • See recent transactions
+   • View trend charts
+
+2. ADD YOUR FIRST ACCOUNT
+   • Go to Accounts tab
+   • Tap "+" button
+   • Enter account name (e.g., "My Bank")
+   • Set initial balance
+   • Save
+
+3. ADD YOUR FIRST TRANSACTION
+   • From Dashboard, tap "Add Expense" or "Add Income"
+   • Enter amount
+   • Add description
+   • Save
+
+4. CREATE A BUDGET
+   • Go to More → Budgets
+   • Tap "+" button
+   • Select category
+   • Set budget amount
+   • Choose period (Monthly recommended)
+   • Save
+
+5. SET A SAVINGS GOAL
+   • Go to More → Goals
+   • Tap "+" button
+   • Enter goal name
+   • Set target amount
+   • Add deadline (optional)
+   • Save
+
+
+═══════════════════════════════════════════════════════════════════════
+
+
+🎯 KEY FEATURES AT A GLANCE
+═══════════════════════════════════════════════════════════════════════
+
+NAVIGATION:
+  • Dashboard - Overview and quick actions
+  • Transactions - View and manage all transactions
+  • Reports - Charts and analytics
+  • Accounts - Manage your accounts
+  • More - Budgets, Goals, Settings
+
+QUICK ACTIONS:
+  • Add Expense - Red button on Dashboard
+  • Add Income - Green button on Dashboard
+  • Transfer - Blue button on Dashboard
+
+DATA MANAGEMENT:
+  • Settings → Backup Data - Create backup
+  • Settings → Export Data - Export to CSV/JSON
+  • Settings → Import Data - Import from CSV/JSON
+
+
+═══════════════════════════════════════════════════════════════════════
+
+
+🔧 TROUBLESHOOTING
+═══════════════════════════════════════════════════════════════════════
+
+PROBLEM: "ModuleNotFoundError: No module named 'kivy'"
+SOLUTION: pip install -r requirements.txt
+
+PROBLEM: "ModuleNotFoundError: No module named 'kivymd'"
+SOLUTION: pip install kivymd
+
+PROBLEM: Charts not showing
+SOLUTION: The app creates charts automatically. Make sure matplotlib
+          is installed: pip install matplotlib
+
+PROBLEM: Database error
+SOLUTION: Delete "money_manager.db" file and restart the app
+
+PROBLEM: App crashes on startup
+SOLUTION: 1. Check Python version: python --version (need 3.8+)
+          2. Reinstall dependencies: pip install -r requirements.txt
+          3. Run verification: python test_setup.py
+
+PROBLEM: Window too small/large
+SOLUTION: Edit main.py, find "Window.size = (360, 640)" and change
+          to your preferred size
+
+
+═══════════════════════════════════════════════════════════════════════
+
+
+📚 DOCUMENTATION FILES
+═══════════════════════════════════════════════════════════════════════
+
+• QUICK_START.txt (this file)
+  → Fast setup and basic usage
+
+• SETUP_INSTRUCTIONS.txt
+  → Detailed setup for all platforms
+
+• PROJECT_OVERVIEW.txt
+  → Complete feature list and architecture
+
+• requirements.txt
+  → Python dependencies
+
+• buildozer.spec
+  → Android APK build configuration
+
+
+═══════════════════════════════════════════════════════════════════════
+
+
+💡 TIPS FOR BEST EXPERIENCE
+═══════════════════════════════════════════════════════════════════════
+
+1. Generate sample data first (python sample_data.py)
+   This helps you understand how the app works
+
+2. Start with one account and a few transactions
+   Don't overwhelm yourself initially
+
+3. Set realistic budgets
+   Track spending for a week first, then set budgets
+
+4. Use categories consistently
+   This makes reports more meaningful
+
+5. Regular backups
+   Go to Settings → Backup Data weekly
+
+6. Explore all screens
+   Use bottom navigation to discover features
+
+
+═══════════════════════════════════════════════════════════════════════
+
+
+🎨 CUSTOMIZATION
+═══════════════════════════════════════════════════════════════════════
+
+CHANGE THEME:
+  Settings → Theme → Toggle Light/Dark
+
+CHANGE CURRENCY:
+  Settings → Currency → Select your currency
+
+MANAGE CATEGORIES:
+  Settings → Manage Categories → Add/Edit/Delete
+
+SET PIN LOCK:
+  Settings → PIN Lock → Set PIN (Framework ready)
+
+
+═══════════════════════════════════════════════════════════════════════
+
+
+🌟 RECOMMENDED WORKFLOW
+═══════════════════════════════════════════════════════════════════════
+
+DAILY:
+  • Add transactions as they occur
+  • Quick check of dashboard
+
+WEEKLY:
+  • Review transactions list
+  • Check budget status
+  • Update goal progress
+
+MONTHLY:
+  • Review reports and analytics
+  • Adjust budgets if needed
+  • Create backup
+  • Export data for records
+
+
+═══════════════════════════════════════════════════════════════════════
+
+
+📞 NEED MORE HELP?
+═══════════════════════════════════════════════════════════════════════
+
+• Check SETUP_INSTRUCTIONS.txt for detailed troubleshooting
+• Read PROJECT_OVERVIEW.txt for complete feature documentation
+• Review code comments in source files
+
+
+═══════════════════════════════════════════════════════════════════════
+
+                        🎉 ENJOY USING MONEY MANAGER! 🎉
+
+     Track your finances, reach your goals, and take control of your money!
+
+═══════════════════════════════════════════════════════════════════════
+

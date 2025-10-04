@@ -1,0 +1,191 @@
+#:kivy 2.0
+
+<ReportsScreen>:
+    name: 'reports'
+    
+    MDBoxLayout:
+        orientation: 'vertical'
+        
+        MDTopAppBar:
+            title: "Reports & Analytics"
+            md_bg_color: app.theme_cls.primary_color
+            specific_text_color: 1, 1, 1, 1
+            left_action_items: [["arrow-left", lambda x: setattr(root.manager, 'current', 'dashboard')]]
+            right_action_items: [["download", lambda x: root.export_report()], ["refresh", lambda x: root.refresh_reports()]]
+        
+        ScrollView:
+            MDBoxLayout:
+                orientation: 'vertical'
+                padding: dp(16)
+                spacing: dp(16)
+                size_hint_y: None
+                height: self.minimum_height
+                
+                # Period Selector
+                MDCard:
+                    size_hint_y: None
+                    height: dp(80)
+                    elevation: 2
+                    padding: dp(16)
+                    
+                    MDBoxLayout:
+                        orientation: 'horizontal'
+                        spacing: dp(10)
+                        
+                        MDLabel:
+                            text: "Period:"
+                            size_hint_x: 0.2
+                            font_style: "Subtitle1"
+                        
+                        MDRaisedButton:
+                            text: "This Week"
+                            size_hint_x: 0.2
+                            on_release: root.set_period('week')
+                        
+                        MDRaisedButton:
+                            text: "This Month"
+                            size_hint_x: 0.2
+                            md_bg_color: app.theme_cls.primary_color
+                            on_release: root.set_period('month')
+                        
+                        MDRaisedButton:
+                            text: "This Year"
+                            size_hint_x: 0.2
+                            on_release: root.set_period('year')
+                        
+                        MDRaisedButton:
+                            text: "Custom"
+                            size_hint_x: 0.2
+                            on_release: root.show_custom_period()
+                
+                # Summary Stats
+                MDCard:
+                    size_hint_y: None
+                    height: dp(120)
+                    elevation: 2
+                    padding: dp(16)
+                    
+                    MDBoxLayout:
+                        orientation: 'horizontal'
+                        spacing: dp(20)
+                        
+                        MDBoxLayout:
+                            orientation: 'vertical'
+                            
+                            MDLabel:
+                                text: "Total Income"
+                                font_style: "Caption"
+                                size_hint_y: 0.3
+                            
+                            MDLabel:
+                                id: report_income
+                                text: "$0.00"
+                                font_style: "H5"
+                                bold: True
+                                theme_text_color: "Custom"
+                                text_color: 0.3, 0.7, 0.3, 1
+                        
+                        MDBoxLayout:
+                            orientation: 'vertical'
+                            
+                            MDLabel:
+                                text: "Total Expense"
+                                font_style: "Caption"
+                                size_hint_y: 0.3
+                            
+                            MDLabel:
+                                id: report_expense
+                                text: "$0.00"
+                                font_style: "H5"
+                                bold: True
+                                theme_text_color: "Custom"
+                                text_color: 0.9, 0.2, 0.2, 1
+                        
+                        MDBoxLayout:
+                            orientation: 'vertical'
+                            
+                            MDLabel:
+                                text: "Net"
+                                font_style: "Caption"
+                                size_hint_y: 0.3
+                            
+                            MDLabel:
+                                id: report_net
+                                text: "$0.00"
+                                font_style: "H5"
+                                bold: True
+                                theme_text_color: "Custom"
+                                text_color: 0.1, 0.5, 0.8, 1
+                
+                # Expense by Category Chart
+                MDLabel:
+                    text: "Expenses by Category"
+                    font_style: "H6"
+                    bold: True
+                    size_hint_y: None
+                    height: dp(30)
+                
+                MDCard:
+                    size_hint_y: None
+                    height: dp(350)
+                    elevation: 2
+                    padding: dp(16)
+                    
+                    FitImage:
+                        id: pie_chart
+                        source: ""
+                
+                # Income vs Expense Chart
+                MDLabel:
+                    text: "Income vs Expense Trend"
+                    font_style: "H6"
+                    bold: True
+                    size_hint_y: None
+                    height: dp(30)
+                
+                MDCard:
+                    size_hint_y: None
+                    height: dp(300)
+                    elevation: 2
+                    padding: dp(16)
+                    
+                    FitImage:
+                        id: line_chart
+                        source: ""
+                
+                # Monthly Comparison Chart
+                MDLabel:
+                    text: "Monthly Comparison"
+                    font_style: "H6"
+                    bold: True
+                    size_hint_y: None
+                    height: dp(30)
+                
+                MDCard:
+                    size_hint_y: None
+                    height: dp(300)
+                    elevation: 2
+                    padding: dp(16)
+                    
+                    FitImage:
+                        id: bar_chart
+                        source: ""
+                
+                # Category Summary List
+                MDLabel:
+                    text: "Category Summary"
+                    font_style: "H6"
+                    bold: True
+                    size_hint_y: None
+                    height: dp(30)
+                
+                MDCard:
+                    size_hint_y: None
+                    height: dp(300)
+                    elevation: 2
+                    padding: dp(8)
+                    
+                    ScrollView:
+                        MDList:
+                            id: category_summary_list
+
