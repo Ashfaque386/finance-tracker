@@ -74,10 +74,6 @@ jobs:
     - name: Build APK with Buildozer
       run: |
         buildozer android debug
-      env:
-        USE_SDK_WRAPPER: 1
-        ANDROID_SDK_ROOT: /usr/local/lib/android/sdk
-        ANDROID_NDK_HOME: /usr/local/lib/android/sdk/ndk/27.3.13750724
     
     - name: Upload APK artifact
       uses: actions/upload-artifact@v4
