@@ -10,6 +10,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    timeout-minutes: 60
     
     steps:
     - name: Checkout code
@@ -30,6 +31,7 @@ jobs:
           unzip \
           openjdk-17-jdk \
           autoconf \
+          automake \
           libtool \
           pkg-config \
           zlib1g-dev \
@@ -38,11 +40,15 @@ jobs:
           cmake \
           libffi-dev \
           libssl-dev \
-          ccache
+          ccache \
+          libltdl-dev \
+          wget \
+          curl
     
-    - name: Install Buildozer
+    - name: Install Buildozer and dependencies
       run: |
         pip install --upgrade pip
+        pip install --upgrade setuptools wheel
         pip install buildozer==1.5.0
         pip install cython==0.29.36
     
@@ -52,13 +58,26 @@ jobs:
         path: |
           .buildozer
           ~/.buildozer
-        key: ${{ runner.os }}-buildozer-${{ hashFiles('buildozer.spec') }}
+        key: buildozer-${{ hashFiles('buildozer.spec') }}-v2
         restore-keys: |
-          ${{ runner.os }}-buildozer-
+          buildozer-
+    
+    - name: Set up environment variables
+      run: |
+        echo "ANDROID_SDK_ROOT=$ANDROID_HOME" >> $GITHUB_ENV
+        echo "ANDROID_NDK_HOME=$ANDROID_NDK" >> $GITHUB_ENV
+    
+    - name: Accept Android SDK licenses
+      run: |
+        yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses || true
     
     - name: Build APK with Buildozer
       run: |
-        yes | buildozer -v android debug
+        buildozer android debug
+      env:
+        USE_SDK_WRAPPER: 1
+        ANDROID_SDK_ROOT: /usr/local/lib/android/sdk
+        ANDROID_NDK_HOME: /usr/local/lib/android/sdk/ndk/27.3.13750724
     
     - name: Upload APK artifact
       uses: actions/upload-artifact@v4
