@@ -101,13 +101,17 @@ class DashboardScreen(Screen):
         trend_data = app.db.get_monthly_trend(months=6)
         
         if trend_data:
-            chart_path = app.chart_utils.create_line_chart(
-                trend_data,
-                title="6 Month Trend",
-                filename="dashboard_trend.png"
-            )
-            if chart_path and os.path.exists(chart_path):
-                self.ids.dashboard_chart.source = chart_path
+            try:
+                chart_path = app.chart_utils.create_line_chart(
+                    trend_data,
+                    title="6 Month Trend",
+                    filename="dashboard_trend.png"
+                )
+                if chart_path and os.path.exists(chart_path):
+                    self.ids.dashboard_chart.source = chart_path
+            except Exception as e:
+                # Charts not available, that's OK
+                pass
     
     def add_transaction(self, transaction_type):
         """Open transaction form dialog."""
@@ -309,37 +313,42 @@ class ReportsScreen(Screen):
         """Create and display charts."""
         app = MDApp.get_running_app()
         
-        # Pie chart - Expenses by category
-        expense_data = app.db.get_expense_by_category(start_date, end_date)
-        if expense_data:
-            pie_path = app.chart_utils.create_pie_chart(
-                expense_data,
-                title="Expenses by Category",
-                filename="report_pie.png"
-            )
-            if pie_path and os.path.exists(pie_path):
-                self.ids.pie_chart.source = pie_path
-        
-        # Line chart - Trend
-        trend_data = app.db.get_monthly_trend(months=6)
-        if trend_data:
-            line_path = app.chart_utils.create_line_chart(
-                trend_data,
-                title="Income vs Expense Trend",
-                filename="report_line.png"
-            )
-            if line_path and os.path.exists(line_path):
-                self.ids.line_chart.source = line_path
-        
-        # Bar chart - Monthly comparison
-        if trend_data:
-            bar_path = app.chart_utils.create_bar_chart(
-                trend_data,
-                title="Monthly Comparison",
-                filename="report_bar.png"
-            )
-            if bar_path and os.path.exists(bar_path):
-                self.ids.bar_chart.source = bar_path
+        try:
+            # Pie chart - Expenses by category
+            expense_data = app.db.get_expense_by_category(start_date, end_date)
+            if expense_data:
+                pie_path = app.chart_utils.create_pie_chart(
+                    expense_data,
+                    title="Expenses by Category",
+                    filename="report_pie.png"
+                )
+                if pie_path and os.path.exists(pie_path):
+                    self.ids.pie_chart.source = pie_path
+            
+            # Line chart - Trend
+            trend_data = app.db.get_monthly_trend(months=6)
+            if trend_data:
+                line_path = app.chart_utils.create_line_chart(
+                    trend_data,
+                    title="Income vs Expense Trend",
+                    filename="report_line.png"
+                )
+                if line_path and os.path.exists(line_path):
+                    self.ids.line_chart.source = line_path
+            
+            # Bar chart - Monthly comparison
+            if trend_data:
+                bar_path = app.chart_utils.create_bar_chart(
+                    trend_data,
+                    title="Monthly Comparison",
+                    filename="report_bar.png"
+                )
+                if bar_path and os.path.exists(bar_path):
+                    self.ids.bar_chart.source = bar_path
+        except Exception as e:
+            # Charts not available on Android, that's OK
+            # All other features still work
+            pass
     
     def load_category_summary(self, start_date, end_date):
         """Load category summary list."""

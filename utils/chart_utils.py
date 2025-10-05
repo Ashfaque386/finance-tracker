@@ -1,8 +1,13 @@
 """Chart and visualization utilities using Matplotlib."""
-import matplotlib
-matplotlib.use('Agg')  # Use non-interactive backend for Kivy
-import matplotlib.pyplot as plt
-from matplotlib.figure import Figure
+try:
+    import matplotlib
+    matplotlib.use('Agg')  # Use non-interactive backend for Kivy
+    import matplotlib.pyplot as plt
+    from matplotlib.figure import Figure
+    MATPLOTLIB_AVAILABLE = True
+except ImportError:
+    MATPLOTLIB_AVAILABLE = False
+    
 import io
 from typing import List, Dict, Tuple
 from datetime import datetime
@@ -16,7 +21,7 @@ class ChartUtils:
     def create_pie_chart(data: List[Tuple], title: str = "Expenses by Category", 
                         filename: str = "pie_chart.png") -> str:
         """Create a pie chart for expenses by category."""
-        if not data:
+        if not MATPLOTLIB_AVAILABLE or not data:
             return None
         
         labels = [row[0] for row in data]
@@ -41,7 +46,7 @@ class ChartUtils:
     def create_bar_chart(data: List[Dict], title: str = "Income vs Expense", 
                         filename: str = "bar_chart.png") -> str:
         """Create a bar chart for income vs expense over time."""
-        if not data:
+        if not MATPLOTLIB_AVAILABLE or not data:
             return None
         
         months = [item['month'] for item in data]
@@ -76,7 +81,7 @@ class ChartUtils:
     def create_line_chart(data: List[Dict], title: str = "Spending Trend", 
                          filename: str = "line_chart.png") -> str:
         """Create a line chart for spending trends over time."""
-        if not data:
+        if not MATPLOTLIB_AVAILABLE or not data:
             return None
         
         months = [item['month'] for item in data]
@@ -113,7 +118,7 @@ class ChartUtils:
     @staticmethod
     def create_budget_chart(budgets: List[Dict], filename: str = "budget_chart.png") -> str:
         """Create a horizontal bar chart for budget usage."""
-        if not budgets:
+        if not MATPLOTLIB_AVAILABLE or not budgets:
             return None
         
         categories = [b.get('category_name', 'Unknown') for b in budgets]
@@ -150,7 +155,7 @@ class ChartUtils:
     @staticmethod
     def create_account_balance_chart(accounts: List[Dict], filename: str = "account_chart.png") -> str:
         """Create a bar chart showing account balances."""
-        if not accounts:
+        if not MATPLOTLIB_AVAILABLE or not accounts:
             return None
         
         names = [acc['name'] for acc in accounts]

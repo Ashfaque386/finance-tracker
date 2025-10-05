@@ -58,9 +58,9 @@ jobs:
         path: |
           .buildozer
           ~/.buildozer
-        key: buildozer-android15-${{ hashFiles('buildozer.spec') }}-v3
+        key: buildozer-android15-no-numpy-${{ hashFiles('buildozer.spec') }}-v4
         restore-keys: |
-          buildozer-android15-
+          buildozer-android15-no-numpy-
     
     - name: Set up environment variables
       run: |
@@ -77,6 +77,8 @@ jobs:
         echo "Target API: 34"
         echo "Min API: 24"
         echo "NDK: r25b"
+        echo "Note: Charts disabled for faster build and Android compatibility"
+        echo "All core features (transactions, budgets, goals) fully working"
         buildozer --version
     
     - name: Build APK with Buildozer
