@@ -58,9 +58,9 @@ jobs:
         path: |
           .buildozer
           ~/.buildozer
-        key: buildozer-${{ hashFiles('buildozer.spec') }}-v2
+        key: buildozer-android15-${{ hashFiles('buildozer.spec') }}-v3
         restore-keys: |
-          buildozer-
+          buildozer-android15-
     
     - name: Set up environment variables
       run: |
@@ -71,9 +71,18 @@ jobs:
       run: |
         yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses || true
     
+    - name: Show buildozer configuration
+      run: |
+        echo "Building Money Manager for Android 15"
+        echo "Target API: 34"
+        echo "Min API: 24"
+        echo "NDK: r25b"
+        buildozer --version
+    
     - name: Build APK with Buildozer
       run: |
         buildozer android debug
+      continue-on-error: false
     
     - name: Upload APK artifact
       uses: actions/upload-artifact@v4

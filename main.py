@@ -1,6 +1,22 @@
 """Main application file for Money Manager."""
 import os
+import sys
+
+# Set image provider before importing Kivy
 os.environ['KIVY_IMAGE'] = 'pil'
+
+# Android-specific settings
+if hasattr(sys, 'getandroidapilevel'):
+    # Running on Android
+    os.environ['KIVY_LOG_MODE'] = 'PYTHON'
+    
+    # Request storage permissions on Android
+    from android.permissions import request_permissions, Permission
+    request_permissions([
+        Permission.WRITE_EXTERNAL_STORAGE,
+        Permission.READ_EXTERNAL_STORAGE,
+        Permission.CAMERA
+    ])
 
 from kivy.lang import Builder
 from kivy.uix.screenmanager import ScreenManager, Screen
@@ -885,8 +901,18 @@ class MoneyManagerApp(MDApp):
 
 if __name__ == '__main__':
     try:
-        MoneyManagerApp().run()
+        app = MoneyManagerApp()
+        app.run()
     except Exception as e:
         print(f"Error: {e}")
         traceback.print_exc()
+        
+        # On Android, write error to log file
+        if hasattr(sys, 'getandroidapilevel'):
+            try:
+                with open('/sdcard/money_manager_error.txt', 'w') as f:
+                    f.write(f"Error: {e}\n")
+                    traceback.print_exc(file=f)
+            except:
+                pass
 
